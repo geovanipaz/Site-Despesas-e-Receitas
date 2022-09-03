@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 django = "*"
+py3-validate-email = "*"
 
 [dev-packages]
 
