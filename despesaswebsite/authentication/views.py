@@ -6,6 +6,9 @@ import json
 from django.http import JsonResponse
 from django.core.validators import validate_email, EmailValidator
 from django.core.exceptions import ValidationError
+from django.contrib import messages
+
+
 #from validate_email import validate_email
 # Create your views here.
 
@@ -42,5 +45,11 @@ class UsernameValidationView(View):
 
 class RegistrationView(View):
     def get(self, request):
+        return render(request,'authentication/register.html')
+    def post(self, request):
+        messages.success(request,'Mensagem de Sucesso')
+        messages.warning(request,'Mensagem de Sucesso')
+        messages.info(request,'Mensagem de Sucesso')
+        messages.error(request,'Mensagem de Sucesso')
         return render(request,'authentication/register.html')
     
