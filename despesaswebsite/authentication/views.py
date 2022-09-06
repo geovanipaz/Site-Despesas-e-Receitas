@@ -47,9 +47,26 @@ class RegistrationView(View):
     def get(self, request):
         return render(request,'authentication/register.html')
     def post(self, request):
-        messages.success(request,'Mensagem de Sucesso')
-        messages.warning(request,'Mensagem de Sucesso')
-        messages.info(request,'Mensagem de Sucesso')
-        messages.error(request,'Mensagem de Sucesso')
+        #GET USER DATA
+        #validar
+        #criar uma nova conta
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        
+        context = {
+            'campos':request.POST
+        }
+        
+        if not User.objects.filter(username=username).exists():
+            if not User.objects.filter(email=email).exists():
+                if len(password)<5:
+                    messages.error(request, 'Senha muito curta')
+                    return render(request,'authentication/register.html', context)
+                user = User.objects.create_user(username=username, password=password)
+                user.set_password(password)
+                messages.success(request,'Usuário criado com sucesso.')
+                return render(request,'authentication/register.html')
+        
         return render(request,'authentication/register.html')
     

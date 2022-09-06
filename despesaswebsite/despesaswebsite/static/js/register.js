@@ -5,6 +5,7 @@ const  emailFeedBackArea = document.querySelector(".emailFeedBackArea")
 const usernameSuccessOutput = document.querySelector('.usernameSuccessOutput')
 const showPasswordToggle = document.querySelector('.showPasswordToggle')
 const passwordField = document.querySelector('#passwordField')
+const submitBtn = document.querySelector(".submit-btn")
 
 handleToggleInput = (e) =>{
     if(showPasswordToggle.textContent === "MOSTRAR"){
@@ -33,9 +34,13 @@ emailField.addEventListener("keyup", (e) => {
         .then((data) => {
             console.log("data", data);
             if (data.email_erro){
+                //submitBtn.setAttribute("disabled","disabled");
+                submitBtn.disabled = true;
                 emailField.classList.add("is-valid");
                 emailFeedBackArea.style.display = "block"
                 emailFeedBackArea.innerHTML = `<p>${data.email_erro}</p>`
+            }else{
+                submitBtn.removeAttribute("disabled")
             }
         });
     }
@@ -66,7 +71,11 @@ usernameField.addEventListener("keyup", (e) => {
             if (data.username_erro){
                 usernameField.classList.add("is-valid");
                 feedBackArea.style.display = "block"
-                feedBackArea.innerHTML = `<p>${data.username_erro}</p>`
+                feedBackArea.innerHTML = `<p>${data.username_erro}</p>`;
+                //submitBtn.add("disabled")
+                submitBtn.disabled = true
+            }else{
+                submitBtn.removeAttribute("disabled")
             }
         });
     }
