@@ -1,5 +1,5 @@
 from curses.ascii import isalnum
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.models import User
 import json
@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.core.validators import validate_email, EmailValidator
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from django.contrib import auth
 
 
 #from validate_email import validate_email
@@ -70,3 +71,33 @@ class RegistrationView(View):
         
         return render(request,'authentication/register.html')
     
+
+class LoginView(View):
+    def get(self, request):
+        return render(request, 'authentication/login.html')
+    
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        if username and password:
+            user = auth.authenticate(username=username, password=password)
+            
+            if user:
+                if user.is_active:
+                    auth.login(request, user)
+                    messages.success(request,'Bem Vindo '+user.username+
+                                     ' Agora você está logado')
+                messages.error(request,'Conta não ativada')
+                return redirect('despesas')
+            messages.error('Credenciais Inválidas')
+            return render(request, 'authentication/login.html')
+        messages.error(request,'Preencha os campos')
+        return render(request, 'authentication/login.html')
+        
+        
+class LogoutView(View):
+    def post(self,request):
+        auth.logout(request)
+        messages.success(request, 'Você saiu.')
+        return redirect('login')
