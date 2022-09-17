@@ -2,20 +2,58 @@
 
 {% block content %}
 
-<div class="container">
-    {% include "partials/_messages.html" %}
-    <h1>Lista de Despesas</h1>
+<div class="container mt-4">
     
-    <ul class="list-group">
-        <li class="list-group-item">Beer</li>
-        <li class="list-group-item">Beer</li>
-        <li class="list-group-item">Beer</li>
-        <li class="list-group-item">Beer</li>
-        <li class="list-group-item">Beer</li>
-        <li class="list-group-item">Beer</li>
-    </ul>
+    <div class="row">
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="">Despesas</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Minhas Despesas</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-3">
+            <a href="{% url 'add-despesa' %}" class="btn btn-primary">
+                Adicionar Despesa</a>
+        </div>
+    </div>
 
 </div>
+
+<div class="container">
+    {% if expenses.count %}
+      
+    <table class="table table-stripped table-hover">
+        {% include "partials/_messages.html" %}
+        <thead>
+            <tr>
+                <th>Quantidade (Moeda)</th>
+                <th>Categoria</th>
+                <th>Descrição</th>
+                <th>Date</th>
+                <th></th>
+            </tr>
+            <tbody>
+                {% for expense in expenses %}
+                  
+                    <tr>
+                        <td>{{expense.amount}}</td>
+                        <td>{{expense.category}}</td>
+                        <td>{{expense.description}}</td>
+                        <td>{{expense.date}}</td>
+                        <td><a href="{% url 'despesa-editar' expense.id %}"
+                            class="btn btn-secondary btn-sm">Editar</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </thead>
+    </table>
+    {% endif %}
+</div>
+
 
 
 {% endblock content %}
